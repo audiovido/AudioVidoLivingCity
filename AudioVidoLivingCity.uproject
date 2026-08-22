@@ -1,0 +1,25 @@
+{
+  "FileVersion": 3,
+  "EngineAssociation": "5.8",
+  "Category": "Games",
+  "Description": "AudioVido Living City mobile cinematic vertical slice",
+  "Modules": [
+    {
+      "Name": "AudioVidoLivingCity",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
+    }
+  ],
+  "Plugins": [
+    {
+      "Name": "AudioVidoAgent",
+      "Enabled": true,
+      "TargetAllowList": ["Editor"]
+    },
+    {
+      "Name": "UnrealAgentBridge",
+      "Enabled": true,
+      "TargetAllowList": ["Editor"]
+    }
+  ]
+}

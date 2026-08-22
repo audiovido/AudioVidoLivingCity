@@ -1,0 +1,30 @@
+﻿Binaries/
+DerivedDataCache/
+Intermediate/
+Saved/
+.vs/
+.vscode/
+.idea/
+
+*.sln
+*.VC.db
+*.opensdf
+*.sdf
+*.suo
+
+Build/Receipts/
+
+# Unreal generated/cache files
+*.pdb
+*.obj
+*.dll
+*.exe
+
+# Secrets
+.env
+.env.*
+*.key
+*.pem
+credentials*
+secrets*
+tokens*

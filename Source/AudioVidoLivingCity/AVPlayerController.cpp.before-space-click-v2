@@ -1,0 +1,54 @@
+﻿#include "AVPlayerController.h"
+#include "Components/InputComponent.h"
+#include "AVCityBlock.h"
+#include "AVCameraPawn.h"
+#include "Kismet/GameplayStatics.h"
+
+AAVPlayerController::AAVPlayerController()
+{
+	bShowMouseCursor = true;
+	DefaultMouseCursor = EMouseCursor::Default;
+}
+
+void AAVPlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+	InputComponent->BindAction(TEXT("PrimaryClick"), IE_Pressed, this, &AAVPlayerController::HandlePrimaryClick);
+	InputComponent->BindAction(TEXT("Escape"), IE_Pressed, this, &AAVPlayerController::HandleEscape);
+}
+
+void AAVPlayerController::MoveForward(float Value)
+{
+}
+
+void AAVPlayerController::MoveRight(float Value)
+{
+}
+
+void AAVPlayerController::HandlePrimaryClick()
+{
+    FHitResult Hit;
+    if (!GetHitResultUnderCursor(ECC_Visibility, true, Hit) || !Hit.GetComponent()) return;
+
+    AAVCityBlock* City = Cast<AAVCityBlock>(UGameplayStatics::GetActorOfClass(GetWorld(), AAVCityBlock::StaticClass()));
+    AAVCameraPawn* CameraPawn = Cast<AAVCameraPawn>(GetPawn());
+    if (!City || !CameraPawn) return;
+
+    for (const FName& Tag : Hit.GetComponent()->ComponentTags)
+    {
+        for (const FAVVenueData& Venue : City->GetVenues())
+        {
+            if (Venue.Id == Tag)
+            {
+                CameraPawn->FocusAt(Venue.WorldLocation);
+                return;
+            }
+        }
+    }
+}
+
+void AAVPlayerController::HandleEscape()
+{
+	SetInputMode(FInputModeGameOnly());
+	bShowMouseCursor = false;
+}

@@ -1,0 +1,16 @@
+#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/HUD.h"
+#include "AVHUD.generated.h"
+
+UCLASS()
+class AUDIOVIDOLIVINGCITY_API AAVHUD : public AHUD
+{
+	GENERATED_BODY()
+
+public:
+	AAVHUD();
+
+	virtual void DrawHUD() override;
+};

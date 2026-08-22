@@ -1,0 +1,33 @@
+#include "AVPlayerController.h"
+#include "Components/InputComponent.h"
+
+AAVPlayerController::AAVPlayerController()
+{
+	bShowMouseCursor = true;
+	DefaultMouseCursor = EMouseCursor::Default;
+}
+
+void AAVPlayerController::SetupInputComponent()
+{
+	Super::SetupInputComponent();
+	InputComponent->BindAction(TEXT("PrimaryClick"), IE_Pressed, this, &AAVPlayerController::HandlePrimaryClick);
+	InputComponent->BindAction(TEXT("Escape"), IE_Pressed, this, &AAVPlayerController::HandleEscape);
+}
+
+void AAVPlayerController::MoveForward(float Value)
+{
+}
+
+void AAVPlayerController::MoveRight(float Value)
+{
+}
+
+void AAVPlayerController::HandlePrimaryClick()
+{
+}
+
+void AAVPlayerController::HandleEscape()
+{
+	SetInputMode(FInputModeGameOnly());
+	bShowMouseCursor = false;
+}

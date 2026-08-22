@@ -1,0 +1,29 @@
+﻿#pragma once
+
+#include "CoreMinimal.h"
+#include "GameFramework/HUD.h"
+#include "AVVenueData.h"
+#include "AVHUD.generated.h"
+
+UCLASS()
+class AUDIOVIDOLIVINGCITY_API AAVHUD : public AHUD
+{
+    GENERATED_BODY()
+
+public:
+    AAVHUD();
+    virtual void DrawHUD() override;
+
+    void DismissWelcome();
+    bool IsWelcomeVisible() const { return bShowWelcome; }
+
+    void SetSelectedVenue(const FAVVenueData& Venue);
+    void ClearSelectedVenue();
+    bool HasSelectedVenue() const { return bHasSelectedVenue; }
+
+private:
+    bool bShowWelcome = true;
+    bool bHasSelectedVenue = false;
+    FAVVenueData SelectedVenue;
+};
+

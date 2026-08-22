@@ -1,0 +1,17 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "1.0.0",
+  "FriendlyName": "AudioVido Agent",
+  "Description": "A review-first AI development workspace for Unreal Editor.",
+  "Category": "Editor",
+  "CanContainContent": false,
+  "IsBetaVersion": true,
+  "Modules": [
+    {
+      "Name": "AudioVidoAgent",
+      "Type": "Editor",
+      "LoadingPhase": "Default"
+    }
+  ]
+}
