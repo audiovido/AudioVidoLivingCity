@@ -38,12 +38,12 @@ void AAVHUD::DrawHUD()
     if (bShowWelcome)
     {
     DrawRect(FLinearColor(0.025f,0.045f,0.075f,0.96f), W*0.5f-220, H*0.5f-130, 440, 260);
-    Canvas->DrawText(GEngine->GetLargeFont(), TEXT("Welcome"), W*0.5f-72, H*0.5f-96);
-    Canvas->DrawText(GEngine->GetSmallFont(), TEXT("Choose how you enter the living city."), W*0.5f-145, H*0.5f-46);
+    Canvas->DrawText(GEngine->GetLargeFont(), TEXT("Welcome"), W*0.5f-72, H*0.5f-96, FLinearColor(1, 1, 1, 1));
+    Canvas->DrawText(GEngine->GetSmallFont(), TEXT("Choose how you enter the living city."), W*0.5f-145, H*0.5f-46, FLinearColor(1, 1, 1, 1));
     DrawRect(FLinearColor(0.05f,0.72f,0.78f,1), W*0.5f-170, H*0.5f+28, 150, 48);
     DrawRect(FLinearColor(0.12f,0.16f,0.22f,1), W*0.5f+20, H*0.5f+28, 150, 48);
-    Canvas->DrawText(GEngine->GetMediumFont(), TEXT("Continue"), W*0.5f-145, H*0.5f+41);
-    Canvas->DrawText(GEngine->GetMediumFont(), TEXT("Privacy"), W*0.5f+48, H*0.5f+41);
+    Canvas->DrawText(GEngine->GetMediumFont(), TEXT("Continue"), W*0.5f-145, H*0.5f+41, FLinearColor(1, 1, 1, 1));
+    Canvas->DrawText(GEngine->GetMediumFont(), TEXT("Privacy"), W*0.5f+48, H*0.5f+41, FLinearColor(1, 1, 1, 1));
     }
     if (bHasSelectedVenue && !bShowWelcome)
     {
@@ -53,22 +53,16 @@ void AAVHUD::DrawHUD()
         const float PanelH = 300.f;
         DrawRect(FLinearColor(0.018f,0.032f,0.055f,0.96f), PanelX, PanelY, PanelW, PanelH);
         DrawRect(SelectedVenue.Accent, PanelX, PanelY, 5.f, PanelH);
-        Canvas->DrawText(GEngine->GetSmallFont(), SelectedVenue.Eyebrow, PanelX+24.f, PanelY+22.f);
-        Canvas->DrawText(GEngine->GetLargeFont(), SelectedVenue.Name, PanelX+24.f, PanelY+50.f, 0.9f, 0.9f);
-        Canvas->DrawText(GEngine->GetMediumFont(), SelectedVenue.Headline, PanelX+24.f, PanelY+96.f);
-        Canvas->DrawText(GEngine->GetSmallFont(), SelectedVenue.Time, PanelX+24.f, PanelY+142.f);
-        Canvas->DrawText(GEngine->GetSmallFont(), SelectedVenue.Distance, PanelX+24.f, PanelY+172.f);
-        Canvas->DrawText(GEngine->GetSmallFont(), SelectedVenue.Presence, PanelX+24.f, PanelY+202.f);
-        Canvas->DrawText(GEngine->GetSmallFont(), SelectedVenue.AgeRule, PanelX+24.f, PanelY+246.f);
+        Canvas->DrawText(GEngine->GetSmallFont(), SelectedVenue.Eyebrow, PanelX+24.f, PanelY+22.f, FLinearColor(1, 1, 1, 1));
+        Canvas->DrawText(GEngine->GetLargeFont(), SelectedVenue.Name, PanelX+24.f, PanelY+50.f, 0.9f, 0.9f, FLinearColor(1, 1, 1, 1));
+        Canvas->DrawText(GEngine->GetMediumFont(), SelectedVenue.Headline, PanelX+24.f, PanelY+96.f, FLinearColor(1, 1, 1, 1));
+        Canvas->DrawText(GEngine->GetSmallFont(), SelectedVenue.Time, PanelX+24.f, PanelY+142.f, FLinearColor(1, 1, 1, 1));
+        Canvas->DrawText(GEngine->GetSmallFont(), SelectedVenue.Distance, PanelX+24.f, PanelY+172.f, FLinearColor(1, 1, 1, 1));
+        Canvas->DrawText(GEngine->GetSmallFont(), SelectedVenue.Presence, PanelX+24.f, PanelY+202.f, FLinearColor(1, 1, 1, 1));
+        Canvas->DrawText(GEngine->GetSmallFont(), SelectedVenue.AgeRule, PanelX+24.f, PanelY+246.f, FLinearColor(1, 1, 1, 1));
         DrawRect(FLinearColor(0.08f,0.12f,0.18f,1.f), PanelX+24.f, PanelY+262.f, 96.f, 28.f);
-        Canvas->DrawText(GEngine->GetSmallFont(), TEXT("BACK"), PanelX+52.f, PanelY+269.f);
+        Canvas->DrawText(GEngine->GetSmallFont(), TEXT("BACK"), PanelX+52.f, PanelY+269.f, FLinearColor(1, 1, 1, 1));
     }
     DrawRect(FLinearColor(0.01f,0.02f,0.035f,0.92f), 0, H-54, W, 54);
-    Canvas->DrawText(GEngine->GetSmallFont(), TEXT("WASD Move | Mouse Look | Click Explore | Esc Close"), 32, H-35);
+    Canvas->DrawText(GEngine->GetSmallFont(), TEXT("WASD Move | Mouse Look | Click Explore | Esc Close"), 32, H-35, FLinearColor(1, 1, 1, 1));
 }
-
-
-
-
-
-
