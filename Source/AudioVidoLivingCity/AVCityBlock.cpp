@@ -158,12 +158,37 @@ void AAVCityBlock::AddVenue(const FAVVenueData& Data, const FVector& Scale)
         Tag
     );
 
+    // Dark sign backing gives venue names a readable architectural anchor.
+    AddMesh(
+        Data.Id.ToString() + TEXT("_SignBack"),
+        AtFront(0.f, 12.f, ShellScale.Z * 16.f),
+        FVector(ShellScale.X * .72f, .05f, .25f),
+        FLinearColor(.018f, .024f, .034f),
+        Root,
+        Tag
+    );
+
+    // Thin accent strip reads like restrained architectural neon.
+    AddMesh(
+        Data.Id.ToString() + TEXT("_AccentStrip"),
+        AtFront(0.f, 16.f, ShellScale.Z * 13.f),
+        FVector(ShellScale.X * .64f, .045f, .035f),
+        Data.Accent * .72f,
+        Root,
+        Tag
+    );
+
     AddLabel(
         Data.Name,
         AtFront(0.f, 22.f, ShellScale.Z * 16.f),
         Facing,
-        28.f,
-        Data.Accent,
+        31.f,
+        FLinearColor(
+            FMath::Min(Data.Accent.R * 1.20f, 1.f),
+            FMath::Min(Data.Accent.G * 1.20f, 1.f),
+            FMath::Min(Data.Accent.B * 1.20f, 1.f),
+            1.f
+        ),
         Root
     );
 
@@ -174,6 +199,25 @@ void AAVCityBlock::AddVenue(const FAVVenueData& Data, const FVector& Scale)
         15.f,
         FLinearColor(.90f, .93f, .98f),
         Root
+    );
+
+    // Warm/cool luminous facade markers make entrances readable at night.
+    AddMesh(
+        Data.Id.ToString() + TEXT("_GlowPanelL"),
+        AtFront(-ShellScale.X * 34.f, 8.f, -2.f),
+        FVector(.12f, .045f, .72f),
+        Data.Accent * .55f,
+        Root,
+        Tag
+    );
+
+    AddMesh(
+        Data.Id.ToString() + TEXT("_GlowPanelR"),
+        AtFront(ShellScale.X * 34.f, 8.f, -2.f),
+        FVector(.12f, .045f, .72f),
+        Data.Accent * .55f,
+        Root,
+        Tag
     );
 
     // --------------------------------------------------------
@@ -347,7 +391,7 @@ void AAVCityBlock::AddVenue(const FAVVenueData& Data, const FVector& Scale)
         );
     }
 
-    // Venue frontage accent light.
+    // Soft colored spill at the venue frontage.
     UPointLightComponent* Light =
         NewObject<UPointLightComponent>(
             this,
@@ -359,12 +403,41 @@ void AAVCityBlock::AddVenue(const FAVVenueData& Data, const FVector& Scale)
 
     Light->SetupAttachment(Root);
     Light->SetRelativeLocation(
-        AtFront(0.f, 95.f, 35.f)
+        AtFront(0.f, 85.f, 42.f)
     );
     Light->SetLightColor(Data.Accent.ToFColor(true));
-    Light->SetIntensity(1750.f);
-    Light->SetAttenuationRadius(480.f);
+    Light->SetIntensity(1450.f);
+    Light->SetAttenuationRadius(440.f);
     Light->RegisterComponent();
+
+    // Focused architectural wash aimed back toward the facade.
+    USpotLightComponent* Wash =
+        NewObject<USpotLightComponent>(
+            this,
+            *FString::Printf(
+                TEXT("%s_FacadeWash"),
+                *Data.Id.ToString()
+            )
+        );
+
+    Wash->SetupAttachment(Root);
+
+    const FVector WashLocation =
+        AtFront(0.f, 175.f, 115.f);
+
+    const FVector WashTarget =
+        AtFront(0.f, 0.f, 25.f);
+
+    Wash->SetRelativeLocation(WashLocation);
+    Wash->SetRelativeRotation(
+        (WashTarget - WashLocation).Rotation()
+    );
+    Wash->SetLightColor(Data.Accent.ToFColor(true));
+    Wash->SetIntensity(2600.f);
+    Wash->SetAttenuationRadius(650.f);
+    Wash->SetInnerConeAngle(24.f);
+    Wash->SetOuterConeAngle(42.f);
+    Wash->RegisterComponent();
 }
 
 void AAVCityBlock::AddStreetFurniture()
@@ -470,8 +543,8 @@ void AAVCityBlock::AddStreetFurniture()
                 L->SetLightColor(
                     FColor(255, 188, 118)
                 );
-                L->SetIntensity(900.f);
-                L->SetAttenuationRadius(420.f);
+                L->SetIntensity(1150.f);
+                L->SetAttenuationRadius(460.f);
                 L->RegisterComponent();
             }
         }
@@ -503,17 +576,18 @@ void AAVCityBlock::AddStreetFurniture()
         NewObject<USkyLightComponent>(this);
 
     Sky->SetupAttachment(Root);
-    Sky->SetIntensity(.42f);
+    Sky->SetIntensity(.26f);
+    Sky->SetLightColor(FColor(92, 118, 162));
     Sky->RegisterComponent();
 
     UExponentialHeightFogComponent* Fog =
         NewObject<UExponentialHeightFogComponent>(this);
 
     Fog->SetupAttachment(Root);
-    Fog->SetFogDensity(.010f);
-    Fog->SetFogHeightFalloff(.22f);
+    Fog->SetFogDensity(.014f);
+    Fog->SetFogHeightFalloff(.20f);
     Fog->SetFogInscatteringColor(
-        FLinearColor(.030f, .040f, .065f)
+        FLinearColor(.018f, .028f, .052f)
     );
     Fog->RegisterComponent();
 }
