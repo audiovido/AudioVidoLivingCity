@@ -1,4 +1,4 @@
-﻿#include "AVCameraPawn.h"
+#include "AVCameraPawn.h"
 #include "Camera/CameraComponent.h"
 #include "Components/PostProcessComponent.h"
 
@@ -55,9 +55,17 @@ void AAVCameraPawn::SetupPlayerInputComponent(UInputComponent* Input)
 
 void AAVCameraPawn::FocusAt(const FVector& P)
 {
-	FVector Side = P.Y > 0 ? FVector(0, -760, 250) : FVector(0, 760, 250);
-	TargetLocation = P + Side;
-	TargetRotation = (P + FVector(0, 0, 30) - TargetLocation).Rotation();
+    const float SideSign = P.Y > 0.f ? -1.f : 1.f;
+
+    // Pull farther away and lift the camera so it does not intersect venue geometry.
+    TargetLocation = P + FVector(
+        -420.f,
+        SideSign * 1180.f,
+        520.f
+    );
+
+    const FVector LookAt = P + FVector(0.f, 0.f, 170.f);
+    TargetRotation = (LookAt - TargetLocation).Rotation();
 }
 
 void AAVCameraPawn::ResetView()
