@@ -3,6 +3,8 @@
 #include "Editor.h"
 #include "LevelEditorViewport.h"
 #include "UnrealClient.h"
+#include "Engine/Engine.h"
+#include "Engine/GameViewportClient.h"
 #include "ImageUtils.h"
 #include "ImageCore.h"
 #include "Misc/Paths.h"
@@ -331,6 +333,16 @@ FString UUnrealAgentBlueprintLibrary::CaptureActiveViewportDetailed(
 
         Candidates.Add(MoveTemp(Candidate));
     };
+
+    // PIE/game viewport must win over editor viewports.
+    if (GEngine && GEngine->GameViewport && GEngine->GameViewport->Viewport)
+    {
+        AddCandidate(
+            GEngine->GameViewport->Viewport,
+            TEXT("GameViewport"),
+            1000000000000000LL
+        );
+    }
 
     const TArray<FLevelEditorViewportClient*>& LevelClients =
         GEditor->GetLevelViewportClients();
