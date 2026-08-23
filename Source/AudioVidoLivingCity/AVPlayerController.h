@@ -12,6 +12,15 @@ class AUDIOVIDOLIVINGCITY_API AAVPlayerController : public APlayerController
 public:
 	AAVPlayerController();
 
+	UFUNCTION(BlueprintCallable, Category="AudioVido|Automation")
+	bool AutomationDismissWelcome();
+
+	UFUNCTION(BlueprintCallable, Category="AudioVido|Automation")
+	bool AutomationSelectVenue(int32 Index);
+
+	UFUNCTION(BlueprintCallable, Category="AudioVido|Automation")
+	bool AutomationClearVenue();
+
 protected:
 	virtual void SetupInputComponent() override;
 

@@ -1,4 +1,4 @@
-﻿#include "AVPlayerController.h"
+#include "AVPlayerController.h"
 #include "Components/InputComponent.h"
 #include "AVCityBlock.h"
 #include "AVCameraPawn.h"
@@ -9,6 +9,65 @@ AAVPlayerController::AAVPlayerController()
 {
 	bShowMouseCursor = true;
 	DefaultMouseCursor = EMouseCursor::Default;
+}
+
+bool AAVPlayerController::AutomationDismissWelcome()
+{
+    AAVHUD* HUD = Cast<AAVHUD>(GetHUD());
+
+    if (!HUD)
+    {
+        return false;
+    }
+
+    HUD->DismissWelcome();
+    return !HUD->IsWelcomeVisible();
+}
+
+bool AAVPlayerController::AutomationSelectVenue(int32 Index)
+{
+    AAVCityBlock* City = Cast<AAVCityBlock>(
+        UGameplayStatics::GetActorOfClass(
+            GetWorld(),
+            AAVCityBlock::StaticClass()
+        )
+    );
+
+    AAVCameraPawn* CameraPawn = Cast<AAVCameraPawn>(GetPawn());
+    AAVHUD* HUD = Cast<AAVHUD>(GetHUD());
+
+    if (!City || !CameraPawn || !HUD)
+    {
+        return false;
+    }
+
+    const TArray<FAVVenueData>& Venues = City->GetVenues();
+
+    if (!Venues.IsValidIndex(Index))
+    {
+        return false;
+    }
+
+    CameraPawn->FocusAt(Venues[Index].WorldLocation);
+    HUD->SetSelectedVenue(Venues[Index]);
+
+    return true;
+}
+
+bool AAVPlayerController::AutomationClearVenue()
+{
+    AAVHUD* HUD = Cast<AAVHUD>(GetHUD());
+    AAVCameraPawn* CameraPawn = Cast<AAVCameraPawn>(GetPawn());
+
+    if (!HUD || !CameraPawn)
+    {
+        return false;
+    }
+
+    HUD->ClearSelectedVenue();
+    CameraPawn->ResetView();
+
+    return true;
 }
 
 void AAVPlayerController::SetupInputComponent()
