@@ -132,6 +132,6 @@ void AAVCityBlock::OnConstruction(const FTransform& Transform)
     AddStreetFurniture();
     for (const auto& Venue : Venues)
     {
-        AddVenue(Venue, FVector(5.f, 5.f, 5.f));
+        AddVenue(Venue, FVector(3.6f, 3.2f, 3.8f));
     }
 }

@@ -25,6 +25,7 @@ protected:
 	virtual void SetupInputComponent() override;
 
 private:
+	bool SelectVenueByIndex(int32 Index);
 	void MoveForward(float Value);
 	void MoveRight(float Value);
 	void HandlePrimaryClick();

@@ -24,7 +24,7 @@ bool AAVPlayerController::AutomationDismissWelcome()
     return !HUD->IsWelcomeVisible();
 }
 
-bool AAVPlayerController::AutomationSelectVenue(int32 Index)
+bool AAVPlayerController::SelectVenueByIndex(int32 Index)
 {
     AAVCityBlock* City = Cast<AAVCityBlock>(
         UGameplayStatics::GetActorOfClass(
@@ -48,10 +48,16 @@ bool AAVPlayerController::AutomationSelectVenue(int32 Index)
         return false;
     }
 
-    CameraPawn->FocusAt(Venues[Index].WorldLocation);
-    HUD->SetSelectedVenue(Venues[Index]);
+    const FAVVenueData& Venue = Venues[Index];
+    CameraPawn->FocusAt(Venue.WorldLocation);
+    HUD->SetSelectedVenue(Venue);
 
     return true;
+}
+
+bool AAVPlayerController::AutomationSelectVenue(int32 Index)
+{
+    return SelectVenueByIndex(Index);
 }
 
 bool AAVPlayerController::AutomationClearVenue()
@@ -133,10 +139,8 @@ AAVCityBlock* City = Cast<AAVCityBlock>(UGameplayStatics::GetActorOfClass(GetWor
         else if (MouseY >= 213.f && MouseY < 261.f) Index = 1;
         else if (MouseY >= 261.f && MouseY < 309.f) Index = 2;
         else if (MouseY >= 309.f && MouseY < 357.f) Index = 3;
-        if (Venues.IsValidIndex(Index))
+        if (SelectVenueByIndex(Index))
         {
-            CameraPawn->FocusAt(Venues[Index].WorldLocation);
-            if (HUD) HUD->SetSelectedVenue(Venues[Index]);
             return;
         }
     }
@@ -146,12 +150,13 @@ AAVCityBlock* City = Cast<AAVCityBlock>(UGameplayStatics::GetActorOfClass(GetWor
 
     for (const FName& Tag : Hit.GetComponent()->ComponentTags)
     {
-        for (const FAVVenueData& Venue : City->GetVenues())
+        const TArray<FAVVenueData>& Venues = City->GetVenues();
+
+        for (int32 Index = 0; Index < Venues.Num(); ++Index)
         {
-            if (Venue.Id == Tag)
+            if (Venues[Index].Id == Tag)
             {
-                CameraPawn->FocusAt(Venue.WorldLocation);
-                if (HUD) HUD->SetSelectedVenue(Venue);
+                SelectVenueByIndex(Index);
                 return;
             }
         }
