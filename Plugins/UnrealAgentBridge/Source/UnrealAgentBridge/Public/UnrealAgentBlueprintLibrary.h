@@ -62,6 +62,13 @@ public:
         const FString& GraphName
     );
 
+    UFUNCTION(BlueprintCallable, Category="Unreal Agent|Blueprint Graph")
+    static bool DeleteNodeByTitle(
+        const FString& BlueprintAssetPath,
+        const FString& GraphName,
+        const FString& NodeTitle
+    );
+
     UFUNCTION(BlueprintCallable, Category="Unreal Agent|Viewport")
     static bool CaptureActiveViewport(
         const FString& OutputPath

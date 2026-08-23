@@ -273,6 +273,37 @@ TArray<FString> UUnrealAgentBlueprintLibrary::ListGraphNodes(
     return Result;
 }
 
+
+bool UUnrealAgentBlueprintLibrary::DeleteNodeByTitle(
+    const FString& BlueprintAssetPath,
+    const FString& GraphName,
+    const FString& NodeTitle)
+{
+    using namespace UnrealAgentBridgeInternal;
+
+    UBlueprint* Blueprint = LoadBlueprint(BlueprintAssetPath);
+    UEdGraph* Graph = FindGraph(Blueprint, GraphName);
+
+    if (!Blueprint || !Graph)
+        return false;
+
+    UEdGraphNode* Node = FindNodeByTitle(Graph, NodeTitle);
+
+    if (!Node)
+        return false;
+
+    Blueprint->Modify();
+    Graph->Modify();
+    Node->Modify();
+
+    Node->BreakAllNodeLinks();
+    Graph->RemoveNode(Node);
+
+    FBlueprintEditorUtils::MarkBlueprintAsStructurallyModified(Blueprint);
+
+    return true;
+}
+
 bool UUnrealAgentBlueprintLibrary::CaptureActiveViewport(
     const FString& OutputPath)
 {
